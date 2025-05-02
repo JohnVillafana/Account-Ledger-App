@@ -1,11 +1,12 @@
 package Com.pluralsight;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Report {
+    private static List<Transaction> transactions;
+
     public static void showReportsScreen(List<Transaction> transactions) {
         Console console = new Console();
         boolean running = true;
@@ -50,6 +51,20 @@ public class Report {
         }
     }
 
+    private static void searchByVendor(List<Transaction> transactions) {
+        Report.transactions = transactions;
+    }
+
+    private static void showPreviousYear(List<Transaction> transactions) {
+    }
+
+    private static void showYearToDate(List<Transaction> transactions) {
+    }
+
+    private static void showPreviousMonth(List<Transaction> transactions) {
+        Report.transactions = transactions;
+    }
+
     private static void showMonthToDate(List<Transaction> transactions) {
         LocalDate now = LocalDate.now();
         List<Transaction> filtered = transactions.stream()
@@ -83,6 +98,14 @@ public class Report {
                 .collect(Collectors.toList());
 
         Ledger.displayTransactions(results);
+    }
+
+    public static List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public static void setTransactions(List<Transaction> transactions) {
+        Report.transactions = transactions;
     }
 
     // Other report methods implemented similarly...

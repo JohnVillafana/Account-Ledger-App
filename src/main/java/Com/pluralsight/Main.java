@@ -1,10 +1,12 @@
 package Com.pluralsight;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class Main {
     private static final Console console = new Console();
-    private static List<Transaction> transactions = Ledger.loadTransactions();
+    private static final List<Transaction> transactions = Ledger.loadTransactions();
 
     public static void main(String[] args) {
         System.out.println("Welcome to the Accounting Ledger App!");
@@ -62,7 +64,7 @@ public class Main {
                 amount);
 
         Ledger.saveTransaction(transaction);
-        transactions.add(0, transaction); // Add to beginning of list
+        transactions.addFirst(transaction); // Add to beginning of list
 
         System.out.println("Transaction saved successfully!");
     }
