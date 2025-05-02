@@ -1,10 +1,12 @@
-
 package Com.pluralsight;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Console {
-    private static final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     // ANSI color codes
     public static final String RESET = "\u001B[0m";
@@ -12,38 +14,64 @@ public class Console {
     public static final String GREEN = "\u001B[32m";
     public static final String YELLOW = "\u001B[33m";
     public static final String BLUE = "\u001B[34m";
-    public static final String CYAN = "\u001B[36m";
 
     public String promptForString(String prompt) {
-        System.out.print(CYAN + prompt + RESET);
-        return scanner.nextLine().trim();
+        while (true) {
+            System.out.print(BLUE + prompt + RESET);
+            String input = scanner.nextLine().trim();
+            if (!input.isEmpty()) {
+                return input;
+            }
+            printError("Input cannot be empty");
+        }
     }
 
     public double promptForDouble(String prompt) {
         while (true) {
             try {
-                System.out.print(CYAN + prompt + RESET);
+                System.out.print(BLUE + prompt + RESET);
                 return Double.parseDouble(scanner.nextLine());
             } catch (NumberFormatException e) {
-                printError("Invalid input. Please enter a valid number.");
+                printError("Please enter a valid number");
+            }
+        }
+    }
+
+    public LocalDate promptForDate(String prompt) {
+        while (true) {
+            try {
+                System.out.print(BLUE + prompt + " (YYYY-MM-DD): " + RESET);
+                return LocalDate.parse(scanner.nextLine());
+            } catch (DateTimeParseException e) {
+                printError("Invalid date format. Example: 2023-04-15");
+            }
+        }
+    }
+
+    public LocalTime promptForTime(String prompt) {
+        while (true) {
+            try {
+                System.out.print(BLUE + prompt + " (HH:MM:SS): " + RESET);
+                return LocalTime.parse(scanner.nextLine());
+            } catch (DateTimeParseException e) {
+                printError("Invalid time format. Example: 14:30:00");
             }
         }
     }
 
     public void printError(String message) {
-        System.out.println(RED + "[ERROR] " + message + RESET);
+        System.out.println(RED + "[!] " + message + RESET);
     }
 
     public void printSuccess(String message) {
-        System.out.println(GREEN + "[SUCCESS] " + message + RESET);
-    }
-
-    public void printWarning(String message) {
-        System.out.println(YELLOW + "[WARNING] " + message + RESET);
+        System.out.println(GREEN + "[✓] " + message + RESET);
     }
 
     public void printHeader(String header) {
-        System.out.println(BLUE + "\n=== " + header + " ===" + RESET);
+        System.out.println("\n" + YELLOW + "=== " + header + " ===" + RESET);
     }
 
+    public void close() {
+        scanner.close();
+    }
 }

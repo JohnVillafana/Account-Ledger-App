@@ -5,108 +5,93 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Report {
-    private static List<Transaction> transactions;
+    private final Console console;
+    private final Ledger ledger;
 
-    public static void showReportsScreen(List<Transaction> transactions) {
-        Console console = new Console();
+    public Report(Console console, Ledger ledger) {
+        this.console = console;
+        this.ledger = ledger;
+    }
+
+    public void showReportsMenu() {
         boolean running = true;
-
         while (running) {
-            System.out.println("\nREPORTS SCREEN");
+            console.printHeader("REPORTS MENU");
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
             System.out.println("3) Year To Date");
-            System.out.println("4) Previous Year");
-            System.out.println("5) Search by Vendor");
-            System.out.println("6) Custom Search");
-            System.out.println("0) Back to Ledger");
+            System.out.println("4) Search by Vendor");
+            System.out.println("0) Back to Main Menu");
 
             String choice = console.promptForString("Enter your choice: ");
 
             switch (choice) {
                 case "1":
-                    showMonthToDate(transactions);
+                    showMonthToDate();
                     break;
                 case "2":
-                    showPreviousMonth(transactions);
+                    showPreviousMonth();
                     break;
                 case "3":
-                    showYearToDate(transactions);
+                    showYearToDate();
                     break;
                 case "4":
-                    showPreviousYear(transactions);
-                    break;
-                case "5":
-                    searchByVendor(transactions);
-                    break;
-                case "6":
-                    customSearch(transactions);
+                    searchByVendor();
                     break;
                 case "0":
                     running = false;
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    console.printError("Invalid choice");
             }
         }
     }
 
-    private static void searchByVendor(List<Transaction> transactions) {
-        Report.transactions = transactions;
-    }
-
-    private static void showPreviousYear(List<Transaction> transactions) {
-    }
-
-    private static void showYearToDate(List<Transaction> transactions) {
-    }
-
-    private static void showPreviousMonth(List<Transaction> transactions) {
-        Report.transactions = transactions;
-    }
-
-    private static void showMonthToDate(List<Transaction> transactions) {
+    private void showMonthToDate() {
         LocalDate now = LocalDate.now();
-        List<Transaction> filtered = transactions.stream()
-                .filter(t -> t.getDateTime().toLocalDate().getMonth() == now.getMonth()
-                        && t.getDateTime().toLocalDate().getYear() == now.getYear())
-                .collect(Collectors.toList());
-        Ledger.displayTransactions(filtered);
-    }
-
-    private static void customSearch(List<Transaction> transactions) {
-        Console console = new Console();
-
-        System.out.println("\nCUSTOM SEARCH");
-        String startDate = console.promptForString("Start Date (YYYY-MM-DD, leave blank to skip): ");
-        String endDate = console.promptForString("End Date (YYYY-MM-DD, leave blank to skip): ");
-        String description = console.promptForString("Description (leave blank to skip): ");
-        String vendor = console.promptForString("Vendor (leave blank to skip): ");
-        String amount = console.promptForString("Amount (leave blank to skip): ");
-
-        List<Transaction> results = transactions.stream()
-                .filter(t -> startDate.isEmpty() ||
-                        t.getDateTime().toLocalDate().isAfter(LocalDate.parse(startDate)))
-                .filter(t -> endDate.isEmpty() ||
-                        t.getDateTime().toLocalDate().isBefore(LocalDate.parse(endDate)))
-                .filter(t -> description.isEmpty() ||
-                        t.getDescription().toLowerCase().contains(description.toLowerCase()))
-                .filter(t -> vendor.isEmpty() ||
-                        t.getVendor().toLowerCase().contains(vendor.toLowerCase()))
-                .filter(t -> amount.isEmpty() ||
-                        Double.parseDouble(amount) == t.getAmount())
+        List<Transaction> transactions = ledger.loadTransactions().stream()
+                .filter(t -> t.getDate().getMonth() == now.getMonth()
+                        && t.getDate().getYear() == now.getYear())
                 .collect(Collectors.toList());
 
-        Ledger.displayTransactions(results);
+        console.printHeader("MONTH TO DATE REPORT");
+        System.out.println(Transaction.getHeader());
+        transactions.forEach(System.out::println);
     }
 
-    public static List<Transaction> getTransactions() {
-        return transactions;
+    private void showPreviousMonth() {
+        LocalDate now = LocalDate.now();
+        LocalDate prevMonth = now.minusMonths(1);
+
+        List<Transaction> transactions = ledger.loadTransactions().stream()
+                .filter(t -> t.getDate().getMonth() == prevMonth.getMonth()
+                        && t.getDate().getYear() == prevMonth.getYear())
+                .collect(Collectors.toList());
+
+        console.printHeader("PREVIOUS MONTH REPORT");
+        System.out.println(Transaction.getHeader());
+        transactions.forEach(System.out::println);
     }
 
-    public static void setTransactions(List<Transaction> transactions) {
-        Report.transactions = transactions;
+    private void showYearToDate() {
+        int currentYear = LocalDate.now().getYear();
+        List<Transaction> transactions = ledger.loadTransactions().stream()
+                .filter(t -> t.getDate().getYear() == currentYear)
+                .collect(Collectors.toList());
+
+        console.printHeader("YEAR TO DATE REPORT");
+        System.out.println(Transaction.getHeader());
+        transactions.forEach(System.out::println);
     }
 
-    // Other report methods implemented similarly...
+    private void searchByVendor() {
+        String vendor = console.promptForString("Enter vendor name: ");
+        List<Transaction> transactions = ledger.loadTransactions().stream()
+                .filter(t -> t.getVendor().equalsIgnoreCase(vendor))
+                .collect(Collectors.toList());
+
+        console.printHeader("VENDOR REPORT: " + vendor.toUpperCase());
+        System.out.println(Transaction.getHeader());
+        transactions.forEach(System.out::println);
+    }
 }
