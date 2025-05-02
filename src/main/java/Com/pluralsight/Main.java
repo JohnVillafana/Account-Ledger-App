@@ -2,7 +2,6 @@ package Com.pluralsight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
 
 public class Main {
     private final Console console;
