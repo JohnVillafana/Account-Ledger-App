@@ -20,7 +20,7 @@ A command-line accounting system for tracking financial transactions with CSV pe
 
 - 📈 **Financial Reports**
     - Month-to-date
-    - Previous month
+    - Previous month 
     - Year-to-date
     - Vendor search
 
