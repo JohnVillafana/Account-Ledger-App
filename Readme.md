@@ -29,8 +29,7 @@ A command-line accounting system for tracking financial transactions with CSV pe
     - Data validation on load
 
 ### Home Screen
-![](/Users/johncodes/pluralsight/LearnToCode_Capstones/Accounting-Ledger-App/Accounting-Ledger-App/src/main/resources/Homescreen.jpg)
-
+![Homescreen.jpg](src/main/resources/Homescreen.jpg)
 
 ### Ledger Screen
 
