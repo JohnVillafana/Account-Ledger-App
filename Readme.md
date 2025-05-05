@@ -33,7 +33,9 @@ A command-line accounting system for tracking financial transactions with CSV pe
 
 ### Ledger Screen
 
+![LedgerMenu.jpg](src/main/resources/LedgerMenu.jpg)
 ### Report Screen
-
+![ReportMenu.jpg](src/main/resources/ReportMenu.jpg)
 ### Intersting Piece of Code
+
 
