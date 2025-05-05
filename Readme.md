@@ -37,5 +37,8 @@ A command-line accounting system for tracking financial transactions with CSV pe
 ### Report Screen
 ![ReportMenu.jpg](src/main/resources/ReportMenu.jpg)
 ### Intersting Piece of Code
+The custom search functionality represented my most significant technical challenge and growth opportunity in this project. I deliberately avoided pre-built solutions, choosing instead to architect the entire system from first principles. The algorithm processes natural language queries with contextual awareness, automatically extracting transactional keywords (like merchant names or dollar amounts) while discarding non-essential terms. For instance, when users input "Amazon purchase on May 5th", the system intelligently isolates "Amazon" and the date parameters to deliver precise results.
+
+
 
 
