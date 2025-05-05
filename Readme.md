@@ -1,7 +1,6 @@
 # Accounting Ledger Application
 
 ![Java](https://img.shields.io/badge/Java-23-blue)
-![Gradle](https://img.shields.io/badge/Gradle-7.4-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 A command-line accounting system for tracking financial transactions with CSV persistence.
@@ -29,6 +28,13 @@ A command-line accounting system for tracking financial transactions with CSV pe
     - Automatic file creation
     - Data validation on load
 
+### Home Screen
+![](/Users/johncodes/pluralsight/LearnToCode_Capstones/Accounting-Ledger-App/Accounting-Ledger-App/src/main/resources/Homescreen.jpg)
 
-   git clone https://github.com/JohnVillafana/Account-Ledger-App.git
-   cd Accounting-Ledger-App
+
+### Ledger Screen
+
+### Report Screen
+
+### Intersting Piece of Code
+
